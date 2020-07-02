@@ -19,9 +19,34 @@ class Animacao {
     this.alturaSprite = alturaSprite;
 
     this.frameAtual = 0;
+    this.isTransparent = false;
+    this.blinkTimeout = 0;
   }
 
-  exibe() {
+  exibe(isBlinking) {
+    //rect(this.x, this.y, this.largura, this.altura);
+
+    if (isBlinking) {
+      if (!this.isTransparent) {
+        tint(255, 255, 255, 100);
+        if (this.blinkTimeout === 0) {
+          this.blinkTimeout = setTimeout(() => {
+            this.isTransparent = true;
+            this.blinkTimeout = 0;
+          }, 100);
+        }
+      } else {
+        if (this.blinkTimeout === 0) {
+          this.blinkTimeout = setTimeout(() => {
+            this.isTransparent = false;
+            this.blinkTimeout = 0;
+          }, 100);
+        }
+      }
+    } else {
+      noTint();
+    }
+
     image(
       this.imagem,
       this.x,
@@ -33,6 +58,7 @@ class Animacao {
       this.larguraSprite,
       this.alturaSprite
     );
+
     this.anima();
   }
 

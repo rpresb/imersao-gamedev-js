@@ -2,6 +2,7 @@ class Personagem extends Animacao {
   constructor(
     matriz,
     imagem,
+    somDoPulo,
     x,
     y,
     largura,
@@ -14,12 +15,29 @@ class Personagem extends Animacao {
     this.yInicial = y;
     this.xInicial = x;
 
+    this.somDoPulo = somDoPulo;
+
     this.velocidadeDoPulo = 0;
-    this.gravidade = 3;
+    this.gravidade = 6;
+    this.alturaDoPulo = -50;
+
+    this.pulos = 0;
+
+    this.invencivel = false;
+  }
+
+  exibe() {
+    super.exibe(this.invencivel);
   }
 
   pula() {
-    this.velocidadeDoPulo = -30;
+    if (this.pulos === 3) {
+      return;
+    }
+
+    somDoPulo.play();
+    this.pulos++;
+    this.velocidadeDoPulo = this.alturaDoPulo;
   }
 
   aplicaGravidade() {
@@ -28,6 +46,7 @@ class Personagem extends Animacao {
 
     if (this.y > this.yInicial) {
       this.y = this.yInicial;
+      this.pulos = 0;
     }
   }
 
@@ -45,5 +64,12 @@ class Personagem extends Animacao {
     );
 
     return colisao;
+  }
+
+  ficaInvencivel() {
+    this.invencivel = true;
+    setTimeout(() => {
+      this.invencivel = false;
+    }, 1000);
   }
 }
